@@ -1,3 +1,4 @@
+import funct
 import FreeSimpleGUI as sg
 import shutil
 import os
@@ -38,11 +39,12 @@ while True:
         case 'Compress':
 
             temp_folder = './temp' 
+            os.mkdir(temp_folder)
 
             for folder in user_selected_folders:
-                # source_path = os.path.join(folder) 
-                # Write function that will get the last folder name in a filepath.
-                shutil.copytree(folder, temp_folder, dirs_exist_ok=True)
+                unique_temp_folder = temp_folder + funct.find_last_slash_index(folder)
+                print(unique_temp_folder)
+                shutil.copytree(folder, unique_temp_folder, dirs_exist_ok=True)
             shutil.make_archive(destination + '/archive', 'zip', temp_folder)
             shutil.rmtree(temp_folder)
     
