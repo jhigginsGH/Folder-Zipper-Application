@@ -6,5 +6,5 @@ def find_last_slash_index(filepath):
     for index, char in enumerate(filepath):
         if char == '/':
             slash_count +=1
-        if slash_count == number_of_slashes:
-            return filepath[index:] 
+            if slash_count == number_of_slashes:
+                return filepath[index:] 
