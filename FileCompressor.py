@@ -26,40 +26,37 @@ window = sg.Window("File Zipper", layout=[[label1, selected_folder_box, choose_f
                                           [label3, remove_folder_button],
                                           [folder_list],
                                           [compress_button]])
+try:
+    while True:
 
-while True:
+        action, folders = window.read()
+        selected_folder = folders["selected_folder"]
+        destination = folders["destination"]
 
-    action, folders = window.read()
-    print(action)
-    print(folders)
-    selected_folder = folders["selected_folder"]
-    destination = folders["destination"]
+        match action:
+            case 'Compress':
 
-    match action:
-        case 'Compress':
+                temp_folder = './temp' 
+                os.mkdir(temp_folder)
 
-            temp_folder = './temp' 
-            os.mkdir(temp_folder)
-
-            for folder in user_selected_folders:
-                unique_temp_folder = temp_folder + funct.find_last_slash_index(folder)
-                print(unique_temp_folder)
-                shutil.copytree(folder, unique_temp_folder, dirs_exist_ok=True)
-            shutil.make_archive(destination + '/archive', 'zip', temp_folder)
-            shutil.rmtree(temp_folder)
-    
-        case 'add_folder_button':
-            user_selected_folders.append(folders['selected_folder'])
-            folder_list.update(user_selected_folders)
-
-        case sg.WIN_CLOSED:
-            break
-
-        case "Remove":
-            print(folders["folder_clicked"])
-            user_selected_folders.remove(folders["folder_clicked"][0])
-            folder_list.update(user_selected_folders)
+                for folder in user_selected_folders:
+                    unique_temp_folder = temp_folder + funct.find_last_slash_index(folder)
+                    print(unique_temp_folder)
+                    shutil.copytree(folder, unique_temp_folder, dirs_exist_ok=True)
+                shutil.make_archive(destination + '/archive', 'zip', temp_folder)
+                shutil.rmtree(temp_folder)
         
-    
-    
+            case 'add_folder_button':
+                user_selected_folders.append(folders['selected_folder'])
+                folder_list.update(user_selected_folders)
+
+
+            case "Remove":
+                print(folders["folder_clicked"])
+                user_selected_folders.remove(folders["folder_clicked"][0])
+                folder_list.update(user_selected_folders)
+            
+except TypeError:
+    window.close
+
 window.close()
